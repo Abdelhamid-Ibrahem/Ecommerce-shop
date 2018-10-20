@@ -185,10 +185,8 @@ if (isset($_SESSION['Username'])) {
                        		 <select  name="Member">
                        		    <option value="0">...</option>
                    				<?php 
-                   				     $stmt = $con->prepare("Select * from users");
-                   				     $stmt->execute();
-                   				     $users = $stmt->fetchAll();
-                   				     foreach ($users as $user) {
+                               $allMembers = getAllFrom("*", "users", "", "", "userID");
+                   				     foreach ($allMembers as $user) {
                    				         echo "<option value='" . $user['userID'] . "'>" . $user['Username'] . "</option>";
                    				     }
                    				?>
@@ -202,18 +200,32 @@ if (isset($_SESSION['Username'])) {
                         <div class="col-sm-10 col-md-6">
                        		 <select  name="category">
                        		    <option value="0">...</option>
-                   				<?php 
-                   				     $stmt2 = $con->prepare("Select * from categories");
-                   				     $stmt2->execute();
-                   				     $cats = $stmt2->fetchAll();
-                   				     foreach ($cats as $cat) {
+                   				<?php
+                               $allCats = getAllFrom("*", "categories", "where parent = 0", "", "ID"); 
+                   				     foreach ($allCats as $cat) {
                    				         echo "<option value='" . $cat['ID'] . "'>" . $cat['Name'] . "</option>";
+                                   $childCats = getAllFrom("*", "categories", "where parent = {$cat['ID']}", "", "ID"); 
+                                   foreach ($childCats as $child) {
+                                   echo "<option value='" . $child['ID'] . "'>--- " . $child['Name'] . "</option>";
+                                   }
                    				     }
                    				?>
                        		 </select>
                         </div>
                     </div>
                     <!-- End Categories Field -->
+                    <!-- Start Tags Field -->
+                    <div class="form-group form-group-lg">
+                        <label class="col-sm-2 control-label">Tags</label>
+                        <div class="col-sm-10 col-md-6">
+                           <input 
+                              type="text" 
+                              name="tags" 
+                              class="form-control"  
+                              placeholder="Separate Tags With Comma (,)" />
+                        </div>
+                    </div>
+                    <!-- End Tags Field -->
                     <!-- Start submit Field -->
                     <div class="form-group form-group-lg">
                          <div class="col-sm-offset-2 col-sm-10">
@@ -244,6 +256,7 @@ if (isset($_SESSION['Username'])) {
             $status = $_POST['Status'];
             $member = $_POST['Member'];
             $cat    = $_POST['category'];
+            $tags   = $_POST['tags'];
             
                         
             // Validate The Form
@@ -295,8 +308,8 @@ if (isset($_SESSION['Username'])) {
                     // Insert UserInfo In Database
                     
                     $Stmt = $con->prepare("Insert Into
-                                                  items(Name, Description, Price, Add_Date, Country_Made, Status, Member_ID, Cat_ID)
-                                                  Values(:zname, :zdesc, :zprice, now(), :zmad, :zstatus, :zmember, :zcat )");
+                                                  items(Name, Description, Price, Add_Date, Country_Made, Status, Member_ID, Cat_ID, tags)
+                                                  Values(:zname, :zdesc, :zprice, now(), :zmad, :zstatus, :zmember, :zcat, :ztags )");
                     
                     $Stmt->execute(array(
                         
@@ -306,7 +319,8 @@ if (isset($_SESSION['Username'])) {
                         'zmad'     => $mad,                        
                         'zstatus'  => $status,
                         'zmember'  => $member,
-                        'zcat'     => $cat
+                        'zcat'     => $cat,
+                        'ztags'    => $tags
                         
                     ));
                     
@@ -467,6 +481,19 @@ if (isset($_SESSION['Username'])) {
                             </div>
                         </div>
                         <!-- End Categories Field -->
+                        <!-- Start Tags Field -->
+                          <div class="form-group form-group-lg">
+                              <label class="col-sm-2 control-label">Tags</label>
+                              <div class="col-sm-10 col-md-6">
+                                 <input 
+                                    type="text" 
+                                    name="tags" 
+                                    class="form-control"  
+                                    placeholder="Separate Tags With Comma (,)"
+                                    value="<?php echo $item['tags'] ?>" />
+                              </div>
+                          </div>
+                        <!-- End Tags Field -->
                         <!-- Start submit Field -->
                         <div class="form-group form-group-lg">
                              <div class="col-sm-offset-2 col-sm-10">
@@ -569,6 +596,7 @@ if (isset($_SESSION['Username'])) {
                 $status   = $_POST['Status'];
                 $cat      = $_POST['category'];
                 $member   = $_POST['Member'];
+                $tags     = $_POST['tags'];
                 
                 // Validate The Form
                 
@@ -626,10 +654,11 @@ if (isset($_SESSION['Username'])) {
                                                 Country_Made = ?, 
                                                 Status = ?, 
                                                 Cat_ID = ?, 
-                                                Member_ID = ? 
+                                                Member_ID = ?,
+                                                tags = ?
                                             WHERE 
                                                 Item_ID = ?");
-                    $Stmt->execute(array($name, $desc, $price, $country, $status, $cat, $member, $id ));
+                    $Stmt->execute(array($name, $desc, $price, $country, $status, $cat, $member, $tags, $id ));
                     
                     // Echo Success Message
                     

@@ -15,8 +15,24 @@
     	<div class="container">
     	
             <?php 
-                if (isset($_SESSION['user'])) {
-                    echo 'Wlecome ' . $_SESSION['user'] ;  
+                if (isset($_SESSION['user'])) { ?>
+
+                    <img class="my-image img-thumbnail img-circle" src="User_male.png" alt="" />
+                    <div class="btn-group my-info">
+                        <span class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            <?php echo $sessionUser ?>
+                            <span class="caret"></span>
+                        </span>
+                        <ul class="dropdown-menu">
+                            <li><a href="profile.php">My Profile</a></li>
+                            <li><a href="newad.php">New Item</a></li>
+                            <li><a href="profile.php#my-ads">My Items</a></li>
+                            <li><a href="logout.php">Logout</a></li>                            
+                        </ul>
+
+                    </div>
+                    <?php 
+                
                 } else {
        
             ?>
@@ -40,8 +56,14 @@
         <div class="collapse navbar-collapse" id="app-nav">
           <ul class="nav navbar-nav navbar-right">
 		  <?php 
-		  foreach (getCat() as $cat) {
-		      echo '<li><a href="categories.php?pageid=' . $cat['ID'] . '&pagename=' . str_replace(' ', '-', $cat['Name']) . '">' . $cat['Name'] . '</a></li>';
+           $allCats = getAllFrom("*", "categories", "where parent = 0", "", "ID", "ASC");
+		   foreach ($allCats as $cat) {
+		      echo
+               '<li>
+                    <a href="categories.php?pageid=' . $cat['ID'] . '">
+                     ' . $cat['Name'] . '
+                    </a>
+                </li> ';
 		  }
 		  ?>
           </ul>

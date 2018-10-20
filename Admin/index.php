@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST') {
 ?>
 
 
-  <form class="login" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+  <form class="login" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
          <h4 class="text-center">Admin Login</h4>
          <input 
              class="form-control" 

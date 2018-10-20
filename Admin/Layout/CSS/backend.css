@@ -215,6 +215,10 @@ h1 {
 	box-shadow: 0 3px 10px #ccc;
 	
 }
+.manage-members img {
+	width: 50px;
+	height: 50px;
+}
 .main-table td{
 	background-color: #FFF;
 	vertical-align: middle !important;
@@ -234,21 +238,20 @@ h1 {
 .activate {
 	margin-left: 5px;
 }	
+
 /* End Members Page */
 
 /* Start Category Page */
 
-.categories .panel.heading {
+.categories .panel-heading {
 	color: #959595;
 	font-weight: bold;
-
 }
-.categories .panel.heading i {
+.categories .panel-heading i {
 	position: relative;
-	top: 3px;
-
+	top: 1px;
 }
-.categories .panel.body {
+.categories .panel-body {
 	padding: 0;
 	
 }
@@ -262,7 +265,7 @@ h1 {
 	
 }
 .categories .option .active {
-	color: #c0392b;
+	color: #F00;
 	
 }
 .categories hr {
@@ -279,7 +282,7 @@ h1 {
 	background-color: #EEE;
 }
 .categories .cat:hover .hidden-buttons {
-	right: 20px;
+	right: 10px;
 }
 .categories .cat .hidden-buttons {
 	-webkit-transition: all .5s ease-in-out;
@@ -287,12 +290,10 @@ h1 {
 	transition: all .5s ease-in-out;
 	position: absolute;
 	top: 15px;
-	right: -140px;
-	
+	right: -120px;
 }
 .categories .cat .hidden-buttons a {
 	margin-right: 5px;
-	
 }
 
 .categories .cat h3 {
@@ -304,42 +305,52 @@ h1 {
 }
 .categories .cat .full-view p {
 	margin: 10px 0;
-    color: #707070;
+    color: #6A6A6A;
 }
 
 .categories .cat:last-of-type ~ hr {
 	display: none;
 }
-.categories .cat .Visibility {
+.categories .cat .cat-span {
+	color: #FFF;
+	padding: 4px 10px;
+	margin-right: 6px;
+	border-radius: 6px;
+}
+.categories .cat .visibility {
 	background-color: #c0392b;
-	color: #FFF;
-	padding: 4px 10px;
-	margin-right: 6px;
-	
 }
-.categories .cat .Commenting {
+.categories .cat .commenting {
 	background-color: #2c3e50;
-	color: #FFF;
-	padding: 4px 10px;
-	margin-right: 6px;
-	border-radius: 6px;
-	
 }
 	
-.categories .cat .Advertises {
+.categories .cat .advertises {
 	background-color: #fa5881;
-	color: #FFF;
-	padding: 4px 10px;
-	margin-right: 6px;
-	border-radius: 6px;
-	
 }
-.categroies .add-category {
-	margin-top: 20px;
-	margin-bottom: 20px;
+.categories .add-category {
+	margin-top: -10px;
+	margin-bottom: 30px;
 	
 }	
-
+.categories .child-head {
+	margin: 15px 0 10px;
+	font-weight: bold;
+	font-size: 16px;
+	color: #22ab79;
+}
+.categories .child-cats {
+	margin: 0;
+}
+.categories .child-cats li {
+	margin-left: 15px;
+}
+.categories .child-cats li:before {
+	content: "- ";
+}
+.categories .show-delete {
+	color: #F00;
+	display: none;
+}
 /* End Category Page */
 
 

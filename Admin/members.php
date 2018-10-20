@@ -49,9 +49,10 @@ if (isset($_SESSION['Username'])) {
       <h1 class="text-center">Manage Members</h1>
       <div class="container">
              <div class="table-responsive">
-                  <table class="main-table text-center table table-bordered">
+                  <table class="main-table manage-members text-center table table-bordered">
                   <tr>
-                      <td>#ID</td>
+                      <td>ID</td>
+                      <td>Avatar</td>
                       <td>Username</td>
                       <td>Email</td>
                       <td>Full Name</td>
@@ -62,6 +63,14 @@ if (isset($_SESSION['Username'])) {
                   foreach ($rows as $row) {
                       echo "<tr>";
                              echo "<td>" . $row['userID'] . "</td>";
+                             echo "<td>";
+                                if (empty($row['avatar'])) {
+                                  echo 'No Image';
+                                } else {
+                                 echo "<img src='uploads/avatars/" . $row['avatar'] . "' alt='' />";
+                                }
+                             echo"</td>";
+                             
                              echo "<td>" . $row['Username'] . "</td>";
                              echo "<td>" . $row['Email'] . "</td>";
                              echo "<td>" . $row['Fullname'] . "</td>";
@@ -99,7 +108,7 @@ if (isset($_SESSION['Username'])) {
      
           <h1 class="text-center">Add New Member</h1>
           <div class="container">
-              <form class="form-horizontal" action="?do=Insert" method="post" >    
+              <form class="form-horizontal" action="?do=Insert" method="post" enctype="multipart/form-data" >    
                    <!-- Start Username Field -->
                    <div class="form-group form-group-lg">
                         <label class="col-sm-2 control-label">Username</label>
@@ -135,6 +144,14 @@ if (isset($_SESSION['Username'])) {
                          </div>
                     </div>
                     <!-- End Full Name Field -->
+                    <!-- Start Avatar Field -->
+                    <div class="form-group form-group-lg">
+                         <label class="col-sm-2 control-label">User Avatar</label>
+                         <div class="col-sm-10 col-md-5">
+                              <input type="file" name="avatar" class="form-control" required="required" />
+                         </div>
+                    </div>
+                    <!-- End Avatar Field -->
                     <!-- Start submit Field -->
                     <div class="form-group form-group-lg">
                          <div class="col-sm-offset-2 col-sm-10">
@@ -153,8 +170,22 @@ if (isset($_SESSION['Username'])) {
         
            echo  "<h1 class='text-center'>Insert Member</h1>";
            echo  "<div class='container'>";
-        
-             
+                
+                // Upload Variables 
+
+                $avatarName = $_FILES['avatar']['name'];
+                $avatarSize = $_FILES['avatar']['size'];
+                $avatarTmp  = $_FILES['avatar']['tmp_name'];
+                $avatarType = $_FILES['avatar']['type'];
+
+                // List Of Allowed File Types To Upload 
+
+                $avatarAllowedExtension = array("jpeg", "jpg", "png", "gif");
+
+                // Get Avatar Extension 
+
+                $avatarExtension = strtolower(end(explode('.', $avatarName)));
+
                 // Get Variables From The Form
                
                 $user   = $_POST['username'];
@@ -194,7 +225,16 @@ if (isset($_SESSION['Username'])) {
                     
                     $formErrors[] = 'Email Can\'t Be <strong> Empty </strong>';
                 }
-                
+                if (! empty($avatarName) && ! in_array($avatarExtension, $avatarAllowedExtension)) {
+                   $formErrors[] = 'This Extension Is Not <strong> Allowed </strong>';
+                }
+                if (empty($avatarName)) {
+                   $formErrors[] = 'Avatar Is <strong> Required </strong>';
+                }
+                if ($avatarSize > 4194304) {
+                   $formErrors[] = 'Avatar Cant Be Larger Than  <strong> 4MB </strong>';
+                }
+
                 // Loop Into Errors Array And Echo It
                 
                 foreach ($formErrors as $error) {
@@ -205,9 +245,12 @@ if (isset($_SESSION['Username'])) {
                 // Check If There's No Error Proceed The Update Operation
                 
                 if (empty($formErrors)) {
+
+                  $avatar = rand(0, 100000000) . '_' . $avatarName;
+
+                  move_uploaded_file($avatarTmp, "uploads\avatars\\" . $avatar);
                     
                     // Check If User Exist In Datebase
-                    
                     
                     $check = checkItem("Username", "users", $user);
                     
@@ -221,15 +264,16 @@ if (isset($_SESSION['Username'])) {
                         // Insert UserInfo In Database
                         
                         $Stmt = $con->prepare("Insert Into 
-                                                  users(Username, password, Email, Fullname, Regstatus, Date)
-                                                  Values(:zuser, :zpass, :zmail, :zname, 1, now() )");
+                                                  users(Username, password, Email, Fullname, Regstatus, Date, avatar)
+                                                  Values(:zuser, :zpass, :zmail, :zname, 1, now(), :zavatar)");
                         
                        $Stmt->execute(array(
                            
-                           'zuser' => $user,
-                           'zpass' => $hashPass,
-                           'zmail' => $email,
-                           'zname' => $name
+                           'zuser'   => $user,
+                           'zpass'   => $hashPass,
+                           'zmail'   => $email,
+                           'zname'   => $name,
+                           'zavatar' => $avatar
                        ));
                         
                         // Echo Success Message
@@ -237,7 +281,9 @@ if (isset($_SESSION['Username'])) {
                        $theMsg = "<div class='alert alert-success'>" . $Stmt->rowCount() . ' Record Inserted </div>';
                         redirectHome($theMsg, 'back');
                     }
+                  
                 }
+                
                 
             }else {
                 

@@ -3,6 +3,7 @@
 body{
 	background-color: #F4F4F4;
 	font-size: 16px;
+	height: 3000px;
 }
 h1 {
 	font-size: 45px;
@@ -20,6 +21,13 @@ h1 {
 	position: absolute;
     right: 10px;
     top: 7px;
+    color: #AA0D0D;
+}
+.main-form .asterisk {
+	font-size: 30px;
+	position: absolute;
+    right: 30px;
+    top: 8px;
     color: #AA0D0D;
 }
 .nice-message {
@@ -79,12 +87,18 @@ h1 {
 	padding: 10px;
 	background-color:#FFF;
 }
+.my-image {
+	width: 32px;
+	height: 32px;
+
+}
 
 /* End Header */
 
 /* Start login Page */
 
-.login-page form {
+.login-page form,
+.the-errors {
 	max-width: 300px;
 	margin: auto;
 
@@ -109,8 +123,22 @@ h1 {
 	cursor: pointer;
 }
 .login-page .signup {
-	display: none;
-	
+	display: none;	
+}
+.the-errors .error {
+	padding: 10px;
+	text-align: left;
+	border-left: 5px solid #cd6858;
+	background-color: #fff;
+	margin-bottom: 8px;
+	border-right: 1px solid #e0e0e0;
+	border-top: 1px solid #e0e0e0;
+	border-bottom: 1px solid #e0e0e0;
+	color: #919191;
+} 
+
+.the-errors .error {
+	border-left: 5px solid #cd6858;
 }
 /* End login Page */
 
@@ -130,11 +158,125 @@ h1 {
 	color: #FFF;
 
 }
-
+.item-box .approve-status {
+	position: absolute;
+	top: 40px;
+	left: 0;
+	background-color: #b85a5a;
+	color: #FFF;
+	padding: 3px 5px;
+}
+.item-box .caption p {
+	height: 44px;
+	max-height: 44px;
+}
 /* End Categories Page */
 
+/* Start Profile Page */
 
+.information {
+	margin-top: 20px
+}
 
+.information ul {
+	padding: 0;
+	margin: 0;
+}
+
+.information ul li {
+	padding: 10px;
+}
+.information ul li:nth-child(odd) {
+	background-color: #EEE;
+}
+.information ul li span {
+	display: inline-block;
+	width: 120px;
+}
+.thumbnail .date {
+	text-align: right;
+	font-size: 13px;
+	color: #AAA;
+	font-weight: bold;
+}
+
+.information .btn {
+	margin-top: 10px;
+	
+}
+
+/* End Profile Page */
+
+/* Start Show Item Page */
+.item-info h2 {
+	padding: 10px;
+	margin: 0;
+}
+.item-info p {
+	padding: 10px;
+}
+.item-info ul li {
+	padding: 10px;
+}
+.item-info ul li:nth-child(odd) {
+	background-color: #e8e8e8;
+}
+.item-info ul li span {
+	display: inline-block;
+	width: 120px;
+}
+.tags-items a {
+	display: inline-block;
+	background-color: #e2e2e2;
+	padding: 2px 10px;
+	border-radius: 5px;
+	color: #666;
+	margin-right: 5px;
+}
+
+.add-comment h3 {
+	margin: 0 0 10px;
+}
+.add-comment textarea {
+	display: block;
+	margin-bottom: 10px;
+	width: 300px;
+	height: 80px;
+
+}
+.comment-box {
+	margin-bottom: 20px;
+}
+.comment-box img {
+	max-width: 100px;
+	margin-bottom: 10px;
+}
+.comment-box .lead {
+	background-color: #e0e0e0;
+	position: relative;
+	padding: 10px;
+	margin-top: 25px;
+}
+.comment-box .lead:before {
+	content: "";
+	width: 0;
+	height: 0;
+	border-width: 5px;
+	border-style: solid;
+	border-color: transparent #e0e0e0 transparent transparent;
+	position: absolute;
+	left: -28px;
+	top: 10px;
+}
+
+/* End Show Item Page */
+
+/* Start Our Custom */
+
+.Custom-hr {
+	border-top: 1px solid #c9c9c9;
+}
+/* End Our Custom */
 
 
 

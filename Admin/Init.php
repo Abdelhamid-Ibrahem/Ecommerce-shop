@@ -21,5 +21,5 @@ include $tpl  . 'header.php';
 
 // Include Navbar On All Page Expect The One With $noNavbar Vairable 
 
-if (!isset($noNavbar)) { include $tpl  .  'navbar.php'; }
+//if (!isset($noNavbar)) { include $tpl ; }
    

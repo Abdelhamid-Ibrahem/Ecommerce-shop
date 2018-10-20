@@ -1,39 +1,46 @@
 <?php
 /*
- ** Get Categories Function v1.0
- ** Function To Get Categories From Database 
+ ** Get All Function v2.0
+ ** Function To Get All Records From Any Database Table 
  */
 
-function getCat() {
+function getAllFrom($field, $table, $where = NULL, $and = NULL, $orderfield, $ordering = "DESC") {
     
     global $con;
     
-    $getCat = $con->prepare("SELECT * FROM categories ORDER BY ID ASC");
+    $getAll = $con->prepare("SELECT $field FROM $table $where $and ORDER BY $orderfield $ordering");
     
-    $getCat->execute();
+    $getAll->execute();
     
-    $cats = $getCat->fetchAll();
+    $all = $getAll->fetchAll();
     
-    return $cats;
+    return $all;
     
 }
-/*
- ** Get Items Function v1.0
- ** Function To Get Items From Database
- */
 
-function getItems($CatID) {
-    
+/*
+** Check If User Is Not Activated
+** Function To Check The RegStatus of The User
+*/
+ 
+function checkUserStatus($user) {
+
     global $con;
-    
-    $getItems = $con->prepare("SELECT * FROM items Where Cat_ID = ? ORDER BY Item_ID DESC");
-    
-    $getItems->execute(array($CatID));
-    
-    $Items = $getItems->fetchAll();
-    
-    return $Items;
-    
+
+    $stmtx = $con->prepare("SELECT
+                                  Username, RegStatus
+                           FROM
+                                  users
+                           WHERE
+                                  Username = ?
+                           AND
+                                  RegStatus = 0");
+
+    $stmtx->execute(array($user));
+
+    $status = $stmtx->rowCount();
+
+    return $status;
 }
 
 /*
